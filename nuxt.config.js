@@ -1,3 +1,5 @@
+import colors from 'vuetify/lib/util/colors'
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -33,6 +35,7 @@ export default {
   css: [
     './assets/fonts/NotoSansThaiUI/stylesheet.css',
     './assets/fonts/NotoSansDisplay/stylesheet.css',
+    './assets/styles/global.scss',
   ],
   /*
    ** Plugins to load before mounting the App
@@ -63,6 +66,19 @@ export default {
   vuetify: {
     customVariables: ['./assets/styles/variables.scss'],
     treeShake: true,
+    theme: {
+      themes: {
+        light: {
+          primary: colors.deepPurple.base,
+          secondary: colors.pink.base,
+          accent: colors.indigo.base,
+          error: colors.red.base,
+          warning: colors.amber.base,
+          info: colors.blue.base,
+          success: colors.green.base,
+        },
+      },
+    },
   },
   /*
    ** Build configuration
