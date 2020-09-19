@@ -1,10 +1,11 @@
 <template>
-  <v-app dark>
+  <v-app light>
     <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
+      :width="300"
+      dark
+      expand-on-hover
+      mini-variant
+      permanent
       app
     >
       <v-list>
@@ -23,42 +24,23 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <template v-slot:append>
+        <v-list>
+          <v-list-item link>
+            <v-list-item-action>
+              <v-icon>mdi-logout-variant</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="'Logout'" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
     <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
@@ -66,25 +48,43 @@
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
+          icon: 'mdi-diamond-stone',
+          title: 'จัดการข้อมูลสินค้า',
+          to: '/product',
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          icon: 'mdi-apps',
+          title: 'จัดการประเภทสินค้า',
+          to: '/product-type',
+        },
+        {
+          icon: 'mdi-currency-usd-off',
+          title: 'จัดการรายการโปรโมชั่น',
+          to: '/promotion',
+        },
+        {
+          icon: 'mdi-credit-card-outline',
+          title: 'จัดการช่องทางการชำระเงิน',
+          to: '/payment',
+        },
+        {
+          icon: 'mdi-cart-outline',
+          title: 'ดูรายการการสั่งซื้อ',
+          to: '/order',
+        },
+        {
+          icon: 'mdi-hammer-wrench',
+          title: 'ดูรายการการสั่งทำ',
+          to: '/build-order',
+        },
+        {
+          icon: 'mdi-account-outline',
+          title: 'จัดการลูกค้าสมาชิก',
+          to: '/user',
         },
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
     }
   },
 }
