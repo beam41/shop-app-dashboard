@@ -27,7 +27,7 @@
 
       <template v-slot:append>
         <v-list>
-          <v-list-item link>
+          <v-list-item link @click="logout">
             <v-list-item-action>
               <v-icon>mdi-logout-variant</v-icon>
             </v-list-item-action>
@@ -86,6 +86,12 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    logout() {
+      this.$store.commit('user/logout')
+      this.$router.push('/')
+    },
   },
 }
 </script>
