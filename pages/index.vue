@@ -4,7 +4,7 @@
       <v-card :loading="loading" class="mx-auto my-12" width="400">
         <v-card-title>Login</v-card-title>
 
-        <v-form class="mx-4">
+        <v-form v-model="valid" class="mx-4">
           <v-text-field
             v-model="password"
             type="password"
@@ -24,6 +24,7 @@
             color="primary"
             class="mr-4"
             :loading="loading"
+            :disabled="!valid"
             @click="login"
           >
             Login
@@ -57,6 +58,7 @@ export default {
     error: false,
     errorText: '',
     loading: false,
+    valid: false,
   }),
   methods: {
     login() {
