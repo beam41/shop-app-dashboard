@@ -7,7 +7,7 @@
       <h1>เพิ่มสินค้า</h1>
     </v-row>
     <v-row no-gutters class="d-flex justify-center pt-16">
-      <ProductForm :loading="loading" @submit="submit" />
+      <ProductForm :saving="loading" @submit="submit" />
     </v-row>
     <v-snackbar v-model="error">
       เกิดปัญหาขึ้น

@@ -6,7 +6,8 @@
         :rules="rules"
         label="ชื่อสินค้า"
         required
-        :disabled="loading"
+        :loading="loading"
+        :disabled="saving"
         outlined
         dense
       />
@@ -17,7 +18,8 @@
         type="number"
         required
         outlined
-        :disabled="loading"
+        :loading="loading"
+        :disabled="saving"
         dense
       />
       <v-select
@@ -27,9 +29,9 @@
         required
         outlined
         dense
-        :disabled="loading"
+        :disabled="saving"
         :items="types"
-        :loading="typeLoading"
+        :loading="typeLoading || loading"
       />
       <v-textarea
         v-model="field.description"
@@ -37,14 +39,15 @@
         label="คำอธิบาย"
         required
         outlined
-        :disabled="loading"
+        :disabled="saving"
+        :loading="loading"
         dense
       />
       <v-file-input
         v-model="images"
         :prepend-icon="null"
         prepend-inner-icon="mdi-image"
-        :rules="[(v) => v.length > 0 || 'โปรดเพิ่มรูปภาพ']"
+        :rules="[(v) => v.length + notDeleteImgCount > 0 || 'โปรดเพิ่มรูปภาพ']"
         outlined
         dense
         small-chips
@@ -52,18 +55,26 @@
         show-size
         counter
         accept="image/jpeg, image/png"
-        :disabled="loading"
-        label="รูปประกอบ"
+        :disabled="saving"
+        :loading="loading"
+        :label="editMode ? 'เพิ่มรูปประกอบใหม่' : 'รูปประกอบ'"
+      />
+      <OldImageSelector
+        v-if="editMode"
+        :loading="loading"
+        :saving="saving"
+        :images="oldImages"
       />
       <v-switch
         v-model="field.isVisible"
         inset
         label="แสดงในหน้าร้านค้า"
-        :disabled="loading"
-      ></v-switch>
+        :disabled="saving"
+        :loading="loading"
+      />
     </div>
     <div class="btn-right">
-      <v-btn large color="primary" :loading="loading" @click="submit">
+      <v-btn large color="primary" :loading="saving" @click="submit">
         บันทึก
       </v-btn>
     </div>
@@ -75,6 +86,12 @@ import { getTypes } from '@/api/type'
 export default {
   props: {
     loading: Boolean,
+    saving: Boolean,
+    editMode: Boolean,
+    initialValue: {
+      type: Object,
+      default: null,
+    },
   },
   data: () => ({
     field: {
@@ -84,11 +101,32 @@ export default {
       description: '',
       isVisible: false,
     },
+    oldImages: [],
     images: [],
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
     types: [],
     typeLoading: false,
   }),
+  computed: {
+    notDeleteImgCount() {
+      return this.oldImages.filter((v) => !v.markForDelete).length
+    },
+  },
+  watch: {
+    initialValue(val) {
+      this.field = {
+        name: val.name,
+        price: val.price,
+        typeId: val.typeId,
+        description: val.description,
+        isVisible: val.isVisible,
+      }
+      this.oldImages = val.images.map((v) => ({
+        ...v,
+        markForDelete: false,
+      }))
+    },
+  },
   mounted() {
     this.getTypes()
   },
@@ -116,6 +154,11 @@ export default {
         this.images.forEach((file) => {
           formPayload.append('images', file)
         })
+        this.oldImages
+          .filter((v) => !v.markForDelete)
+          .forEach((v) => {
+            formPayload.append('markForDelete', v.id)
+          })
         this.$emit('submit', formPayload)
       }
     },

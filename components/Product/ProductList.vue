@@ -7,6 +7,7 @@
       :loading="loading"
       :items-per-page="15"
       height="calc(100vh - 143px)"
+      @click:row="rowClick"
     >
       <template v-slot:[`item.isVisible`]="{ item }">
         <v-simple-checkbox v-model="item.isVisible" disabled />
@@ -45,6 +46,9 @@ export default {
   },
   methods: {
     nullish,
+    rowClick(item) {
+      this.$router.push(`/product/${item.id}`)
+    },
   },
 }
 </script>

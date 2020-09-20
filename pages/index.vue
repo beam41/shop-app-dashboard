@@ -5,6 +5,7 @@
         <v-card-title>Login</v-card-title>
 
         <v-form v-model="valid" class="mx-4">
+          <input type="hidden" value="SUPER_ADMIN" name="username" />
           <v-text-field
             v-model="password"
             type="password"
@@ -12,11 +13,12 @@
               (v) => v.length >= 6 || 'รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร',
             ]"
             label="Password"
+            autocomplete="current-password"
             required
             outlined
             dense
             :disabled="loading"
-          ></v-text-field>
+          />
         </v-form>
         <v-card-actions>
           <v-btn
