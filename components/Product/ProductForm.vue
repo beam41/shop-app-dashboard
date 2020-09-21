@@ -155,9 +155,9 @@ export default {
           formPayload.append('images', file)
         })
         this.oldImages
-          .filter((v) => !v.markForDelete)
+          .filter((v) => v.markForDelete)
           .forEach((v) => {
-            formPayload.append('markForDelete', v.id)
+            formPayload.append('markForDeleteId', v.id)
           })
         this.$emit('submit', formPayload)
       }
