@@ -2,6 +2,15 @@
   <v-form ref="form" class="form d-flex flex-column justify-space-between">
     <div>
       <v-text-field
+        v-if="editMode"
+        v-model="initialValueId"
+        label="ID"
+        :loading="loading"
+        outlined
+        dense
+        readonly
+      />
+      <v-text-field
         v-model="field.name"
         :rules="rules"
         label="ชื่อสินค้า"
@@ -73,11 +82,53 @@
         :loading="loading"
       />
     </div>
-    <div class="btn-right">
+    <div class="d-flex">
+      <v-btn
+        v-if="editMode"
+        large
+        color="error"
+        outlined
+        :disabled="saving"
+        @click="deleteDialog = true"
+      >
+        เก็บถาวร
+      </v-btn>
+      <v-spacer />
       <v-btn large color="primary" :loading="saving" @click="submit">
         บันทึก
       </v-btn>
     </div>
+    <!-- delete dialog -->
+    <v-dialog v-model="deleteDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">ต้องการเก็บถาวร?</v-card-title>
+
+        <v-card-text>
+          ต้องการเก็บถาวรสินค้านี้หรือไม่
+          สินค้าที่ถูกเก็บถาวรจะไม่ถูกแสดงในตารางสินค้าและในหน้าร้านค้าอีก
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="error"
+            text
+            :disabled="saving"
+            @click="deleteDialog = false"
+          >
+            ยกเลิก
+          </v-btn>
+          <v-btn
+            color="secondary"
+            text
+            :loading="saving"
+            @click="$emit('archive')"
+          >
+            เก็บถาวร
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-form>
 </template>
 
@@ -106,10 +157,14 @@ export default {
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
     types: [],
     typeLoading: false,
+    deleteDialog: false,
   }),
   computed: {
     notDeleteImgCount() {
       return this.oldImages.filter((v) => !v.markForDelete).length
+    },
+    initialValueId() {
+      return this.initialValue?.id
     },
   },
   watch: {

@@ -3,7 +3,7 @@
     <v-row no-gutters class="d-flex justify-space-between align-center">
       <h1>จัดการประเภทสินค้า</h1>
 
-      <v-btn to="/product/add">
+      <v-btn to="/product-type/add">
         <v-icon>mdi-plus</v-icon> เพิ่มประเภทสินค้า
       </v-btn>
     </v-row>
@@ -31,12 +31,12 @@ export default {
     this.loading = true
     getTypeList()
       .then((res) => {
-        this.loading = false
         this.items = res.data
+        this.loading = false
       })
       .catch((err) => {
-        this.loading = false
         if (err) this.error = true
+        this.loading = false
       })
   },
 }

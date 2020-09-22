@@ -19,3 +19,7 @@ export function editProduct(id, data) {
     'Content-Type': 'multipart/form-data',
   })
 }
+
+export function archiveProduct(id) {
+  return axios.instance.delete(`/products/${id}`)
+}

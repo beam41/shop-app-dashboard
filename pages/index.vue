@@ -67,12 +67,11 @@ export default {
       this.loading = true
       login('SUPER_ADMIN', this.password)
         .then((res) => {
-          this.loading = false
           this.$store.commit('user/login', res.data)
           this.$router.push('/product')
+          this.loading = false
         })
         .catch((err) => {
-          this.loading = false
           if (err.response.status === 403) {
             this.errMessage = 'ชื่อผู้ใช้งานหรือรหัสผ่านผิด'
             this.error = true
@@ -80,6 +79,7 @@ export default {
             this.error = true
             this.errMessage = `เกิดปัญหาขึ้น (รหัสปัญหา ${err.response.status}) โปรดลองใหม่อีกครั้ง`
           }
+          this.loading = false
         })
     },
   },

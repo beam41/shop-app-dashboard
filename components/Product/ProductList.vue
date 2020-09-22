@@ -32,9 +32,9 @@ export default {
     },
     loading: Boolean,
   },
-  data() {
-    return {
-      headers: [
+  computed: {
+    headers() {
+      const head = [
         { text: 'ID', value: 'id' },
         { text: 'ชื่อ', value: 'name' },
         { text: 'ราคา', value: 'price' },
@@ -42,8 +42,9 @@ export default {
         { text: 'แสดงในร้านค้า', value: 'isVisible' },
         { text: 'อยู่ในโปรโมชั่น', value: 'inPromotion' },
         { text: 'ราคาในโปรโมชั่น', value: 'newPrice' },
-      ],
-    }
+      ]
+      return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
+    },
   },
   methods: {
     nullish,

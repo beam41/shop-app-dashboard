@@ -4,15 +4,16 @@
       no-gutters
       class="d-flex justify-space-between align-center flex-grow-0"
     >
-      <h1>แก้ไขสินค้า</h1>
+      <h1>แก้ไขประเภทสินค้า</h1>
     </v-row>
-    <v-row no-gutters class="d-flex justify-center pt-16">
-      <ProductForm
+    <v-row no-gutters class="d-flex justify-center align-center pt-16">
+      <TypeForm
         :loading="loading"
         :saving="saving"
         edit-mode
         :initial-value="data"
         @submit="submit"
+        @archive="archive"
       />
     </v-row>
     <v-snackbar v-model="error">
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { getProductById, editProduct } from '@/api/product'
+import { getTypeById, editType, archiveType } from '@/api/type'
 export default {
   data: () => ({
     loading: false,
@@ -41,26 +42,38 @@ export default {
   methods: {
     getProduct() {
       this.loading = true
-      getProductById(this.$route.params.id)
+      getTypeById(this.$route.params.id)
         .then((res) => {
-          this.loading = false
           this.data = res.data
+          this.loading = false
         })
         .catch((err) => {
-          this.loading = false
           if (err) this.error = true
+          this.loading = false
         })
     },
     submit(data) {
       this.saving = true
-      editProduct(this.$route.params.id, data)
+      editType(this.$route.params.id, data)
         .then((res) => {
+          this.$router.push('/product-type')
           this.saving = false
-          this.$router.push('/product')
         })
         .catch((err) => {
-          this.saving = false
           if (err) this.error = true
+          this.saving = false
+        })
+    },
+    archive() {
+      this.saving = true
+      archiveType(this.$route.params.id)
+        .then((res) => {
+          this.$router.push('/product-type')
+          this.saving = false
+        })
+        .catch((err) => {
+          if (err) this.error = true
+          this.saving = false
         })
     },
   },

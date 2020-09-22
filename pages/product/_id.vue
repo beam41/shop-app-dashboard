@@ -13,6 +13,7 @@
         edit-mode
         :initial-value="data"
         @submit="submit"
+        @archive="archive"
       />
     </v-row>
     <v-snackbar v-model="error">
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { getProductById, editProduct } from '@/api/product'
+import { getProductById, editProduct, archiveProduct } from '@/api/product'
 export default {
   data: () => ({
     loading: false,
@@ -43,24 +44,36 @@ export default {
       this.loading = true
       getProductById(this.$route.params.id)
         .then((res) => {
-          this.loading = false
           this.data = res.data
+          this.loading = false
         })
         .catch((err) => {
-          this.loading = false
           if (err) this.error = true
+          this.loading = false
         })
     },
     submit(data) {
       this.saving = true
       editProduct(this.$route.params.id, data)
         .then((res) => {
-          this.saving = false
           this.$router.push('/product')
+          this.saving = false
         })
         .catch((err) => {
-          this.saving = false
           if (err) this.error = true
+          this.saving = false
+        })
+    },
+    archive() {
+      this.saving = true
+      archiveProduct(this.$route.params.id)
+        .then((res) => {
+          this.$router.push('/product')
+          this.saving = false
+        })
+        .catch((err) => {
+          if (err) this.error = true
+          this.saving = false
         })
     },
   },

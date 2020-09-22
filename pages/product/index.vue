@@ -29,12 +29,12 @@ export default {
     this.loading = true
     getProductList()
       .then((res) => {
-        this.loading = false
         this.items = res.data
+        this.loading = false
       })
       .catch((err) => {
-        this.loading = false
         if (err) this.error = true
+        this.loading = false
       })
   },
 }

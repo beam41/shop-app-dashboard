@@ -4,10 +4,10 @@
       no-gutters
       class="d-flex justify-space-between align-center flex-grow-0"
     >
-      <h1>เพิ่มสินค้า</h1>
+      <h1>เพิ่มประเภทสินค้า</h1>
     </v-row>
-    <v-row no-gutters class="d-flex justify-center pt-16">
-      <ProductForm :saving="loading" @submit="submit" />
+    <v-row no-gutters class="d-flex justify-center align-center">
+      <TypeForm :saving="loading" @submit="submit" />
     </v-row>
     <v-snackbar v-model="error">
       เกิดปัญหาขึ้น
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { addProduct } from '@/api/product'
+import { addType } from '@/api/type'
 export default {
   data: () => ({
     loading: false,
@@ -30,14 +30,14 @@ export default {
   methods: {
     submit(data) {
       this.loading = true
-      addProduct(data)
+      addType(data)
         .then((res) => {
+          this.$router.push('/product-type')
           this.loading = false
-          this.$router.push('/product')
         })
         .catch((err) => {
-          this.loading = false
           if (err) this.error = true
+          this.loading = false
         })
     },
   },
