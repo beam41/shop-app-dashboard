@@ -25,7 +25,7 @@
         </v-list-item>
       </v-list>
 
-      <template v-slot:append>
+      <template #append>
         <v-list>
           <v-list-item link @click="logout">
             <v-list-item-action>

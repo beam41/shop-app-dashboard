@@ -11,7 +11,7 @@
     </v-row>
     <v-snackbar v-model="error">
       เกิดปัญหาขึ้น
-      <template v-slot:action="{ attrs }">
+      <template #action="{ attrs }">
         <v-btn color="secondary" text v-bind="attrs" @click="error = false">
           Close
         </v-btn>

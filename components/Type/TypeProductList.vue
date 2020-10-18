@@ -9,10 +9,10 @@
       dense
       @click:row="rowClick"
     >
-      <template v-slot:top>
+      <template #top>
         <v-subheader>สินค้าในประเภท</v-subheader>
       </template>
-      <template v-slot:[`item.isVisible`]="{ item }">
+      <template #[`item.isVisible`]="{ item }">
         <v-simple-checkbox v-model="item.isVisible" disabled />
       </template>
     </v-data-table>
