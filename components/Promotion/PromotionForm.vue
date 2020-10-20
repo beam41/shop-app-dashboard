@@ -13,14 +13,31 @@
       <v-text-field
         v-model="field.name"
         :rules="rules"
-        label="ชื่อประเภทสินค้า"
+        label="ชื่อโปรโมชัน"
         required
         :loading="loading"
         :disabled="saving"
         outlined
         dense
       />
-      <TypeProductList :items="initialValueProduct" :loading="loading" />
+      <v-textarea
+        v-model="field.description"
+        :rules="rules"
+        label="คำอธิบาย"
+        required
+        outlined
+        :disabled="saving"
+        :loading="loading"
+        dense
+      />
+      <PromotionProductList :items="field.promotionItems" :loading="loading" />
+      <v-switch
+        v-model="field.isBroadcasted"
+        inset
+        label="เผยแพร่โปรโมชัน"
+        :disabled="saving"
+        :loading="loading"
+      />
     </div>
     <div class="d-flex pt-16">
       <v-btn
@@ -90,19 +107,17 @@ export default {
   data: () => ({
     field: {
       name: '',
+      description: '',
+      isBroadcasted: true,
+      promotionItems: [],
     },
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
     deleteDialog: false,
+    products: [],
   }),
   computed: {
     initialValueId() {
       return this.initialValue?.id
-    },
-    initialValueProduct() {
-      return this.initialValue?.productList
-    },
-    initialValueProductLength() {
-      return this.initialValue?.productList.length
     },
   },
   watch: {
@@ -115,7 +130,13 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', { ...this.field })
+        this.$emit('submit', {
+          ...this.field,
+          promotionItems: this.field.promotionItems.map((e) => ({
+            productId: e.id,
+            newPrice: e.newPrice,
+          })),
+        })
       }
     },
   },
@@ -125,6 +146,6 @@ export default {
 <style lang="scss" scoped>
 .form {
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
 }
 </style>

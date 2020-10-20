@@ -23,3 +23,8 @@ export function editProduct(id, data) {
 export function archiveProduct(id) {
   return axios.instance.delete(`/products/${id}`)
 }
+
+
+export function searchProduct(query) {
+  return axios.instance.get(`/products/search?q=${query}`)
+}

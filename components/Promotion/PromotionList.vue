@@ -1,25 +1,23 @@
 <template>
-  <v-card width="100%">
+  <v-card width="100%" class="mt-3">
     <v-data-table
       calculate-widths
       :headers="headers"
       :items="items"
       :loading="loading"
-      :items-per-page="5"
-      dense
+      :items-per-page="15"
+      height="calc(100vh - 143px)"
       @click:row="rowClick"
     >
-      <template #top>
-        <v-subheader>สินค้าในประเภท</v-subheader>
-      </template>
-      <template #[`item.isVisible`]="{ item }">
-        <v-simple-checkbox v-model="item.isVisible" disabled />
+      <template #[`item.isBroadcasted`]="{ item }">
+        <v-simple-checkbox v-model="item.isBroadcasted" disabled />
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script>
+import { nullish } from '@/utils/nullish'
 export default {
   props: {
     items: {
@@ -33,14 +31,16 @@ export default {
       const head = [
         { text: 'ID', value: 'id' },
         { text: 'ชื่อ', value: 'name' },
-        { text: 'แสดงในร้านค้า', value: 'isVisible' },
+        { text: 'เผยแพร่แล้ว', value: 'isBroadcasted' },
+        { text: 'จำนวนสินค้า', value: 'promotionItemsCount' },
       ]
       return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
     },
   },
   methods: {
+    nullish,
     rowClick(item) {
-      this.$router.push(`/product/${item.id}`)
+      this.$router.push(`/promotion/${item.id}`)
     },
   },
 }
