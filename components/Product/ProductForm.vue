@@ -1,11 +1,16 @@
 <template>
-  <v-form ref="form" class="form d-flex flex-column justify-space-between">
+  <v-form
+    ref="form"
+    class="form d-flex flex-column justify-space-between"
+    @submit.prevent="submit"
+  >
     <div>
       <v-text-field
         v-if="editMode"
         v-model="initialValueId"
         label="ID"
         :loading="loading"
+        :disabled="saving"
         outlined
         dense
         readonly
@@ -94,7 +99,7 @@
         เก็บถาวร
       </v-btn>
       <v-spacer />
-      <v-btn large color="primary" :loading="saving" @click="submit">
+      <v-btn large color="primary" :loading="saving" type="submit">
         บันทึก
       </v-btn>
     </div>

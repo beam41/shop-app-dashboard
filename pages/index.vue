@@ -4,7 +4,7 @@
       <v-card :loading="loading" class="mx-auto my-12" width="400">
         <v-card-title>Login</v-card-title>
 
-        <v-form v-model="valid" class="mx-4">
+        <v-form v-model="valid" class="mx-4" @submit.prevent="login">
           <input type="hidden" value="SUPER_ADMIN" name="username" />
           <v-text-field
             v-model="password"
@@ -27,7 +27,7 @@
             class="mr-4"
             :loading="loading"
             :disabled="!valid"
-            @click="login"
+            type="submit"
           >
             Login
           </v-btn>
