@@ -155,7 +155,7 @@ export default {
           ...this.field,
           promotionItems: this.field.promotionItems.map((e) => ({
             productId: e.id,
-            newPrice: e.newPrice,
+            newPrice: +e.newPrice,
           })),
         })
       }
