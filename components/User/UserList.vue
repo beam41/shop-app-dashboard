@@ -9,9 +9,6 @@
       height="calc(100vh - 143px)"
       @click:row="rowClick"
     >
-      <template #[`item.isBroadcasted`]="{ item }">
-        <v-simple-checkbox v-model="item.isBroadcasted" disabled />
-      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -29,16 +26,17 @@ export default {
     headers() {
       const head = [
         { text: 'ID', value: 'id' },
-        { text: 'ชื่อ', value: 'name' },
-        { text: 'เผยแพร่แล้ว', value: 'isBroadcasted' },
-        { text: 'จำนวนสินค้า', value: 'itemsCount' },
+        { text: 'ชื่อผู้ใช้งาน', value: 'username' },
+        { text: 'ชื่อนามสกุล', value: 'fullName' },
+        { text: 'เบอร์โทรศัพท์', value: 'phoneNumber' },
+        { text: 'รายการสั่งซื้อที่ยังไม่สำเร็จ', value: 'activeOrders' },
       ]
       return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
     },
   },
   methods: {
     rowClick(item) {
-      this.$router.push(`/promotion/${item.id}`)
+      this.$router.push(`/user/${item.id}`)
     },
   },
 }
