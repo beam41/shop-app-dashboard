@@ -42,7 +42,7 @@
         <v-col cols="1" class="d-flex justify-center">
           <v-btn
             icon
-            color="danger"
+            color="error"
             :loading="saving"
             @click="$emit('delete', index)"
           >
