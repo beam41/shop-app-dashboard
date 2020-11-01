@@ -1,5 +1,5 @@
 <template>
-  <v-card width="100%">
+  <v-card width="100%" :class="hasActiveInOther ? 'red lighten-5' : null">
     <v-card-title>
       <v-autocomplete
         v-model="append"
@@ -19,6 +19,7 @@
       :loading="loading"
       :items-per-page="5"
       dense
+      :class="hasActiveInOther ? 'red lighten-5' : null"
     >
       <template #top>
         <v-subheader>สินค้าในโปรโมชัน</v-subheader>
@@ -28,6 +29,16 @@
       </template>
       <template #[`item.newPrice`]="{ item }">
         <v-text-field v-model="item.newPrice" type="number" />
+      </template>
+      <template #[`item.onSale`]="{ item }">
+        <template v-if="item.onSale">
+          <span v-if="item.onSaleCurrPromotion"> ใช่ </span>
+          <span v-else class="red--text darken-4"> ไม่ </span>
+        </template>
+        <span v-else> - </span>
+      </template>
+      <template #[`item.actions`]="{ item }">
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </v-card>
@@ -42,6 +53,8 @@ export default {
       default: () => [],
     },
     loading: Boolean,
+    editMode: Boolean,
+    hasActiveInOther: Boolean,
   },
   data: () => ({
     search: '',
@@ -58,6 +71,12 @@ export default {
         { text: 'ราคาปกติ', value: 'price' },
         { text: 'ราคาใหม่', value: 'newPrice' },
       ]
+      if (this.editMode) {
+        head.push(
+          { text: 'กำลังลดราคาในโปรโมชันนี้', value: 'onSale' },
+          { text: '', value: 'actions', sortable: false }
+        )
+      }
       return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
     },
   },
@@ -79,6 +98,11 @@ export default {
     append(next) {
       console.log(next)
       this.items.push({ ...next, newPrice: next.price })
+    },
+  },
+  methods: {
+    deleteItem(id) {
+      this.$emit('delete', id)
     },
   },
 }

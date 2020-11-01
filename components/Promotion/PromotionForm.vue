@@ -1,5 +1,11 @@
 <template>
-  <v-form ref="form" class="form d-flex flex-column justify-space-between">
+  <v-form
+    ref="form"
+    :class="[
+      'form d-flex flex-column justify-space-between',
+      editMode ? 'edit' : null,
+    ]"
+  >
     <div>
       <v-text-field
         v-if="editMode"
@@ -30,7 +36,13 @@
         :loading="loading"
         dense
       />
-      <PromotionProductList :items="field.promotionItems" :loading="loading" />
+      <PromotionProductList
+        :items="field.promotionItems"
+        :loading="loading"
+        :edit-mode="editMode"
+        :has-active-in-other="hasActiveInOther"
+        @delete="deleteItems"
+      />
       <v-switch
         v-model="field.isBroadcasted"
         inset
@@ -42,16 +54,12 @@
     <div class="d-flex pt-16">
       <v-btn
         v-if="editMode"
-        :disabled="initialValueProductLength > 0 || saving"
         large
         color="error"
         outlined
         @click="deleteDialog = true"
       >
-        {{
-          (initialValueProductLength > 0 ? 'ลบรายการสินค้าให้หมดก่อน' : '') +
-          'เก็บถาวร'
-        }}
+        เก็บถาวร
       </v-btn>
 
       <v-spacer />
@@ -65,8 +73,8 @@
         <v-card-title class="headline">ต้องการเก็บถาวร?</v-card-title>
 
         <v-card-text>
-          ต้องการเก็บถาวรประเภทสินค้านี้หรือไม่
-          ประเภทสินค้าที่ถูกเก็บถาวรจะไม่ถูกแสดงในรายการประเภทสินค้าและในหน้าร้านค้าอีก
+          ต้องการเก็บถาวรโปรโมชันนี้หรือไม่
+          โปรโมชันที่ถูกเก็บถาวรจะไม่ถูกแสดงในรายการโปรโมชันและในหน้าร้านค้าอีก
         </v-card-text>
 
         <v-card-actions>
@@ -119,17 +127,30 @@ export default {
     initialValueId() {
       return this.initialValue?.id
     },
+    hasActiveInOther() {
+      return (
+        this.field.isBroadcasted &&
+        !this.field.promotionItems.reduce(
+          (prev, curr) =>
+            prev ? (curr.onSale ? curr.onSaleCurrPromotion : true) : false,
+          true
+        )
+      )
+    },
   },
   watch: {
     initialValue(val) {
       this.field = {
         name: val.name,
+        description: val.description,
+        isBroadcasted: val.isBroadcasted,
+        promotionItems: val.promotionItems,
       }
     },
   },
   methods: {
     submit() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && !this.hasActiveInOther) {
         this.$emit('submit', {
           ...this.field,
           promotionItems: this.field.promotionItems.map((e) => ({
@@ -139,6 +160,11 @@ export default {
         })
       }
     },
+    deleteItems(id) {
+      this.field.promotionItems = this.field.promotionItems.filter(
+        (e) => e.id !== id
+      )
+    },
   },
 }
 </script>
@@ -147,5 +173,9 @@ export default {
 .form {
   width: 100%;
   max-width: 700px;
+
+  &.edit {
+    max-width: 1000px;
+  }
 }
 </style>

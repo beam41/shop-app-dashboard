@@ -4,10 +4,10 @@
       no-gutters
       class="d-flex justify-space-between align-center flex-grow-0"
     >
-      <h1>แก้ไขประเภทสินค้า</h1>
+      <h1>แก้ไขโปรโมชัน</h1>
     </v-row>
     <v-row no-gutters class="d-flex justify-center align-center pt-16">
-      <TypeForm
+      <PromotionForm
         :loading="loading"
         :saving="saving"
         edit-mode
@@ -28,7 +28,11 @@
 </template>
 
 <script>
-import { getTypeById, editType, archiveType } from '@/api/type'
+import {
+  getPromotionById,
+  editPromotion,
+  archivePromotion,
+} from '@/api/promotion'
 export default {
   data: () => ({
     loading: false,
@@ -37,12 +41,12 @@ export default {
     data: null,
   }),
   mounted() {
-    this.getProductType()
+    this.getPromotion()
   },
   methods: {
-    getProductType() {
+    getPromotion() {
       this.loading = true
-      getTypeById(this.$route.params.id)
+      getPromotionById(this.$route.params.id)
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -54,9 +58,9 @@ export default {
     },
     submit(data) {
       this.saving = true
-      editType(this.$route.params.id, data)
+      editPromotion(this.$route.params.id, data)
         .then((res) => {
-          this.$router.push('/product-type')
+          this.$router.push('/promotion')
           this.saving = false
         })
         .catch((err) => {
@@ -66,9 +70,9 @@ export default {
     },
     archive() {
       this.saving = true
-      archiveType(this.$route.params.id)
+      archivePromotion(this.$route.params.id)
         .then((res) => {
-          this.$router.push('/product-type')
+          this.$router.push('/promotion')
           this.saving = false
         })
         .catch((err) => {

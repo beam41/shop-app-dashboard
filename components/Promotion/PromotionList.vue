@@ -32,7 +32,7 @@ export default {
         { text: 'ID', value: 'id' },
         { text: 'ชื่อ', value: 'name' },
         { text: 'เผยแพร่แล้ว', value: 'isBroadcasted' },
-        { text: 'จำนวนสินค้า', value: 'promotionItemsCount' },
+        { text: 'จำนวนสินค้า', value: 'itemsCount' },
       ]
       return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
     },
