@@ -70,6 +70,11 @@ export default {
           to: '/payment',
         },
         {
+          icon: 'mdi-truck-outline',
+          title: 'จัดการวิธีการจัดส่ง',
+          to: '/distribution',
+        },
+        {
           icon: 'mdi-cart-outline',
           title: 'ดูรายการการสั่งซื้อ',
           to: '/order',

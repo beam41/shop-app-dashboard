@@ -4,10 +4,10 @@
       no-gutters
       class="d-flex justify-space-between align-center flex-grow-0"
     >
-      <h1>จัดการช่องทางการชำระเงิน</h1>
+      <h1>จัดการวิธีการจัดส่ง</h1>
     </v-row>
     <v-row no-gutters class="d-flex justify-center align-center pt-16">
-      <PaymentForm
+      <DistributionForm
         v-if="!loading"
         :saving="saving"
         :value="data"
@@ -37,7 +37,10 @@
 </template>
 
 <script>
-import { getPaymentMethod, editPaymentMethod } from '@/api/payment'
+import {
+  getDistributionMethod,
+  editDistributionMethod,
+} from '@/api/distribution'
 export default {
   data: () => ({
     loading: false,
@@ -52,7 +55,7 @@ export default {
   methods: {
     getPaymentMethod() {
       this.loading = true
-      getPaymentMethod()
+      getDistributionMethod()
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -65,7 +68,7 @@ export default {
     submit() {
       this.saving = true
       const data = this.data.map((d) => ({ ...d, id: undefined }))
-      editPaymentMethod(data)
+      editDistributionMethod(data)
         .then((res) => {
           this.success = true
           this.saving = false
@@ -77,9 +80,8 @@ export default {
     },
     addMethod() {
       this.data.push({
-        bank: '',
-        accountNumber: '',
-        accountName: '',
+        name: '',
+        price: '',
       })
     },
     deleteMethod(i) {
