@@ -8,21 +8,46 @@
       permanent
       app
     >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
+      <v-list dark>
+        <template v-for="(item, i) in items">
+          <template v-if="!item.submenu">
+            <v-list-item :key="i" :to="item.to" router exact>
+              <v-list-item-action>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title" />
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <template v-else>
+            <v-list-group :key="i" active-class="white--text">
+              <template v-slot:activator>
+                <v-list-item-action>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title" />
+                </v-list-item-content>
+              </template>
+              <v-list-item
+                v-for="(sub, i2) in item.submenu"
+                :key="i2"
+                :to="sub.to"
+                active-class="white--text"
+                router
+                exact
+              >
+                <v-list-item-action>
+                  <v-icon>{{ item.icon }}-outline</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title v-text="sub.title" />
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-group>
+          </template>
+        </template>
       </v-list>
 
       <template #append>
@@ -45,6 +70,8 @@
 </template>
 
 <script>
+import OrderStateName from '@/constants/order-state-name'
+import OrderState from '@/constants/order-state'
 export default {
   data() {
     return {
@@ -75,9 +102,35 @@ export default {
           to: '/distribution',
         },
         {
-          icon: 'mdi-cart-outline',
+          icon: 'mdi-cart',
           title: 'ดูรายการการสั่งซื้อ',
           to: '/order',
+          submenu: [
+            {
+              title: OrderStateName.CREATED,
+              to: `/order/state/${OrderState.CREATED}`,
+            },
+            {
+              title: OrderStateName.ADDED_PROOF_OF_PAYMENT_FULL,
+              to: `/order/state/${OrderState.ADDED_PROOF_OF_PAYMENT_FULL}`,
+            },
+            {
+              title: OrderStateName.APPROVED_PROOF_OF_PAYMENT_FULL,
+              to: `/order/state/${OrderState.APPROVED_PROOF_OF_PAYMENT_FULL}`,
+            },
+            {
+              title: OrderStateName.SENT,
+              to: `/order/state/${OrderState.SENT}`,
+            },
+            {
+              title: OrderStateName.RECEIVED,
+              to: `/order/state/${OrderState.RECEIVED}`,
+            },
+            {
+              title: OrderStateName.CANCELLED,
+              to: `/order/state/${OrderState.CANCELLED}`,
+            },
+          ],
         },
         {
           icon: 'mdi-hammer-wrench',

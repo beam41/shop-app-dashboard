@@ -44,6 +44,7 @@ export default {
   plugins: [
     { src: './plugins/axios.js', mode: 'client' },
     { src: './plugins/persisted-state.js', mode: 'client' },
+    { src: './plugins/day-js.js', mode: 'client' },
   ],
   /*
    ** Auto import components
