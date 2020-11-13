@@ -9,9 +9,13 @@
           <tbody>
             <tr v-for="item in order.products" :key="item.id">
               <td class="text-left">{{ item.name }}</td>
-              <td class="text-left">
-                {{ nullish(item.newPrice, item.price) }} บาท
+              <td v-if="item.newPrice" class="text-left">
+                <span class="red--text text-decoration-line-through">{{
+                  item.price
+                }}</span>
+                {{ item.newPrice }} บาท
               </td>
+              <td v-else class="text-left">{{ item.price }} บาท</td>
               <td class="text-left">× {{ item.amount }}</td>
               <td class="text-right">
                 {{ nullish(item.newPrice, item.price) * item.amount }}
