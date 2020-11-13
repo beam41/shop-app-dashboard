@@ -6,13 +6,19 @@
     >
       <h1>จัดการคำสั่งซื้อ</h1>
     </v-row>
-    <v-row no-gutters class="d-flex justify-center pt-16">
+    <v-row
+      no-gutters
+      :class="['d-flex justify-center pt-16', data ? null : 'align-center']"
+    >
       <OrderForm
+        v-if="data"
         :loading="loading"
         :saving="saving"
         :order="data"
         @cancel="cancelOrder"
+        @submit="submit"
       />
+      <v-progress-circular v-else indeterminate color="primary" />
     </v-row>
     <v-snackbar v-model="error">
       เกิดปัญหาขึ้น
@@ -26,8 +32,18 @@
 </template>
 
 <script>
-import { getOrderById, cancelOrder } from '@/api/order'
+import {
+  getOrderById,
+  cancelOrder,
+  approveProofOrder,
+  sentOrder,
+} from '@/api/order'
 import OrderState from '@/constants/order-state'
+
+const submitFunctionMap = {
+  SENT: sentOrder,
+  APPROVED_PROOF_OF_PAYMENT_FULL: approveProofOrder,
+}
 
 export default {
   data: () => ({
@@ -61,6 +77,17 @@ export default {
       cancelOrder(this.currId, data)
         .then((res) => {
           this.$router.push(`/order/state/${OrderState.CANCELLED}`)
+          this.loading = false
+        })
+        .catch((err) => {
+          if (err) this.error = true
+          this.loading = false
+        })
+    },
+    submit(event) {
+      submitFunctionMap[event.state](this.currId, event.data)
+        .then((res) => {
+          this.$router.push(`/order/state/${event.state}`)
           this.loading = false
         })
         .catch((err) => {

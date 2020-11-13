@@ -18,6 +18,9 @@
       <template #[`item.updatedDate`]="{ item }">
         {{ dayjs(item.updatedDate).format('D MMM BB H:mm') }}
       </template>
+      <template #[`item.purchaseMethod`]="{ item }">
+        {{ purchaseMethodTxt[item.purchaseMethod] }}
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -38,6 +41,7 @@ export default {
       const head = [
         { text: 'ID', value: 'id' },
         { text: 'สร้างโดย', value: 'createdByUser' },
+        { text: 'วิธีการชำระเงิน', value: 'purchaseMethod' },
         { text: 'จำนวนสินค้า(ต่างชนิด)', value: 'productsCount' },
         { text: 'จำนวนสินค้า(ทั้งหมด)', value: 'amountCount' },
         { text: 'ราคาทั้งหมด', value: 'totalPrice' },
@@ -46,6 +50,10 @@ export default {
       ]
       return head.map((v) => ({ ...v, width: `${(1 / head.length) * 100}%` }))
     },
+    purchaseMethodTxt: () => ({
+      BANK: 'ธนาคาร',
+      ON_DELIVERY: 'ปลายทาง',
+    }),
   },
   methods: {
     rowClick(item) {

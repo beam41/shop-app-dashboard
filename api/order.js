@@ -11,3 +11,11 @@ export function getOrderById(id) {
 export function cancelOrder(id, data) {
   return axios.instance.put(`/orders/${id}/cancelled/admin`, data)
 }
+
+export function approveProofOrder(id) {
+  return axios.instance.put(`/orders/${id}/approve-proof-full`)
+}
+
+export function sentOrder(id, data) {
+  return axios.instance.put(`/orders/${id}/sent`, data)
+}
