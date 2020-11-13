@@ -3,16 +3,19 @@
     <div>
       <OrderDetail :order="order" :loading="loading" />
     </div>
-    <div class="d-flex pt-16">
-      <v-btn large color="error" outlined @click="cancelDialog = true">
-        ยกเลิกคำสั่งซื้อ
-      </v-btn>
+    <div>
+      <div v-if="!isCancelled" class="d-flex pt-16">
+        <v-btn large color="error" outlined @click="cancelDialog = true">
+          ยกเลิกคำสั่งซื้อ
+        </v-btn>
 
-      <v-spacer />
-      <v-btn large color="primary" :loading="saving" type="submit">
-        บันทึก
-      </v-btn>
+        <v-spacer />
+        <v-btn large color="primary" :loading="saving" type="submit">
+          บันทึก
+        </v-btn>
+      </div>
     </div>
+
     <!-- cancel dialog -->
     <v-dialog v-model="cancelDialog" max-width="400">
       <v-form ref="cancelForm" @submit.prevent="cancel">
@@ -46,6 +49,7 @@
 </template>
 
 <script>
+import OrderState from '@/constants/order-state'
 export default {
   props: {
     loading: Boolean,
@@ -59,6 +63,13 @@ export default {
     cancelDialog: false,
     cancelReason: '',
   }),
+  computed: {
+    isCancelled() {
+      return this.order?.orderStates.some(
+        (e) => e.state === OrderState.CANCELLED
+      )
+    },
+  },
   methods: {
     closeCancel() {
       this.cancelDialog = false
