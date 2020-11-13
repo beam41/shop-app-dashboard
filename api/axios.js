@@ -3,7 +3,7 @@ import _axios from 'axios'
 /** @type {{instance: import('axios').AxiosInstance}} */
 const axios = { instance: null }
 
-export const createInstance = ({ store }) => {
+export const createInstance = ({ store, redirect }) => {
   const instance = _axios.create({
     baseURL: process.env.endpoint,
   })
@@ -17,6 +17,16 @@ export const createInstance = ({ store }) => {
 
     return config
   })
+
+  instance.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      if (err.response.status === 401) {
+        store.commit('user/logout')
+        redirect('/')
+      }
+    }
+  )
 
   axios.instance = instance
 }
