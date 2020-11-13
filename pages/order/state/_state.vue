@@ -27,8 +27,11 @@ export default {
     error: false,
   }),
   computed: {
+    currState() {
+      return this.$route.params.state
+    },
     stateName() {
-      return OrderStateName[this.$route.params.state]
+      return OrderStateName[this.currState]
     },
   },
   mounted() {
@@ -37,7 +40,7 @@ export default {
     }
 
     this.loading = true
-    getOrderListByState(this.$route.params.state)
+    getOrderListByState(this.currState)
       .then((res) => {
         this.items = res.data
         this.loading = false

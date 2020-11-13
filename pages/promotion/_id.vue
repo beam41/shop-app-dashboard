@@ -40,13 +40,18 @@ export default {
     error: false,
     data: null,
   }),
+  computed: {
+    currId() {
+      return this.$route.params.id
+    },
+  },
   mounted() {
     this.getPromotion()
   },
   methods: {
     getPromotion() {
       this.loading = true
-      getPromotionById(this.$route.params.id)
+      getPromotionById(this.currId)
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -58,7 +63,7 @@ export default {
     },
     submit(data) {
       this.saving = true
-      editPromotion(this.$route.params.id, data)
+      editPromotion(this.currId, data)
         .then((res) => {
           this.$router.push('/promotion')
           this.saving = false
@@ -70,7 +75,7 @@ export default {
     },
     archive() {
       this.saving = true
-      archivePromotion(this.$route.params.id)
+      archivePromotion(this.currId)
         .then((res) => {
           this.$router.push('/promotion')
           this.saving = false

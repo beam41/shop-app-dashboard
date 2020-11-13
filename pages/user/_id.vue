@@ -35,13 +35,18 @@ export default {
     error: false,
     data: null,
   }),
+  computed: {
+    currId() {
+      return this.$route.params.id
+    },
+  },
   mounted() {
     this.getUser()
   },
   methods: {
     getUser() {
       this.loading = true
-      getUserById(this.$route.params.id)
+      getUserById(this.currId)
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -53,7 +58,7 @@ export default {
     },
     submit(data) {
       this.saving = true
-      editUser(this.$route.params.id, data)
+      editUser(this.currId, data)
         .then((res) => {
           this.$router.push('/user')
           this.saving = false
@@ -65,7 +70,7 @@ export default {
     },
     deleteUser() {
       this.saving = true
-      deleteUser(this.$route.params.id)
+      deleteUser(this.currId)
         .then((res) => {
           this.$router.push('/user')
           this.saving = false

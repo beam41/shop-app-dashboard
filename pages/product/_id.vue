@@ -36,13 +36,18 @@ export default {
     error: false,
     data: null,
   }),
+  computed: {
+    currId() {
+      return this.$route.params.id
+    },
+  },
   mounted() {
     this.getProduct()
   },
   methods: {
     getProduct() {
       this.loading = true
-      getProductById(this.$route.params.id)
+      getProductById(this.currId)
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -54,7 +59,7 @@ export default {
     },
     submit(data) {
       this.saving = true
-      editProduct(this.$route.params.id, data)
+      editProduct(this.currId, data)
         .then((res) => {
           this.$router.push('/product')
           this.saving = false
@@ -66,7 +71,7 @@ export default {
     },
     archive() {
       this.saving = true
-      archiveProduct(this.$route.params.id)
+      archiveProduct(this.currId)
         .then((res) => {
           this.$router.push('/product')
           this.saving = false

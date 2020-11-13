@@ -36,13 +36,18 @@ export default {
     error: false,
     data: null,
   }),
+  computed: {
+    currId() {
+      return this.$route.params.id
+    },
+  },
   mounted() {
     this.getProductType()
   },
   methods: {
     getProductType() {
       this.loading = true
-      getTypeById(this.$route.params.id)
+      getTypeById(this.currId)
         .then((res) => {
           this.data = res.data
           this.loading = false
@@ -54,7 +59,7 @@ export default {
     },
     submit(data) {
       this.saving = true
-      editType(this.$route.params.id, data)
+      editType(this.currId, data)
         .then((res) => {
           this.$router.push('/product-type')
           this.saving = false
@@ -66,7 +71,7 @@ export default {
     },
     archive() {
       this.saving = true
-      archiveType(this.$route.params.id)
+      archiveType(this.currId)
         .then((res) => {
           this.$router.push('/product-type')
           this.saving = false

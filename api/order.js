@@ -7,3 +7,7 @@ export function getOrderListByState(state) {
 export function getOrderById(id) {
   return axios.instance.get(`/orders/${id}`)
 }
+
+export function cancelOrder(id, data) {
+  return axios.instance.put(`/orders/${id}/cancelled/admin`, data)
+}

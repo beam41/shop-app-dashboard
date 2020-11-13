@@ -9,8 +9,8 @@
       height="calc(100vh - 143px)"
       @click:row="rowClick"
     >
-      <template #[`item.createdBy`]="{ item }">
-        {{ item.createdBy.username }} ({{ item.createdBy.fullName }})
+      <template #[`item.createdByUser`]="{ item }">
+        {{ item.createdByUser.username }} ({{ item.createdByUser.fullName }})
       </template>
       <template #[`item.createdDate`]="{ item }">
         {{ dayjs(item.createdDate).format('D MMM BB H:mm') }}
@@ -37,9 +37,9 @@ export default {
     headers() {
       const head = [
         { text: 'ID', value: 'id' },
-        { text: 'สร้างโดย', value: 'createdBy' },
-        { text: 'จำนวนสินค้าต่างชนิด', value: 'productsCount' },
-        { text: 'จำนวนสินค้าทั้งหมด', value: 'amountCount' },
+        { text: 'สร้างโดย', value: 'createdByUser' },
+        { text: 'จำนวนสินค้า(ต่างชนิด)', value: 'productsCount' },
+        { text: 'จำนวนสินค้า(ทั้งหมด)', value: 'amountCount' },
         { text: 'ราคาทั้งหมด', value: 'totalPrice' },
         { text: 'วันที่สร้าง', value: 'createdDate' },
         { text: 'วันที่อัพเดทล่าสุด', value: 'updatedDate' },
