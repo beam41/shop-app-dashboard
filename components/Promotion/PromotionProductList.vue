@@ -33,7 +33,7 @@
       <template #[`item.onSale`]="{ item }">
         <template v-if="item.onSale">
           <span v-if="item.onSaleCurrPromotion"> ใช่ </span>
-          <span v-else class="red--text darken-4"> ไม่ </span>
+          <span v-else class="red--text text--darken-4"> ไม่ </span>
         </template>
         <span v-else> - </span>
       </template>
