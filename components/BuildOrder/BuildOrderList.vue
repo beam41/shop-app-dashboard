@@ -21,7 +21,7 @@
       <template #[`item.expectedCompleteDate`]="{ item }">
         {{
           item.expectedCompleteDate
-            ? dayjs(item.expectedCompleteDate).format('D MMM BB H:mm')
+            ? dayjs(item.expectedCompleteDate).format('D MMM BB')
             : '-'
         }}
       </template>
