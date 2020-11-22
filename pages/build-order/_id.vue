@@ -12,7 +12,6 @@
     >
       <BuildOrderForm
         v-if="data"
-        :loading="loading"
         :saving="saving"
         :order="data"
         @cancel="cancelBuildOrder"
@@ -32,20 +31,27 @@
 </template>
 
 <script>
-import { getBuildOrderById, cancelBuildOrder } from '@/api/build-order'
+import {
+  getBuildOrderById,
+  cancelBuildOrder,
+  ableToBuild,
+  approveProofDeposit,
+  builtComplete,
+  approveProofFull,
+  sent,
+} from '@/api/build-order'
 import OrderState from '@/constants/order-state'
 
-// const submitFunctionMap = {
-//   IS_ABLE_TO_BUILT: approveProof,
-//   APPROVED_PROOF_OF_PAYMENT_DEPOSIT: approveProof,
-//   BUILT_COMPLETE: approveProof,
-//   APPROVED_PROOF_OF_PAYMENT_FULL: approveProof,
-//   SENT: sentOrder,
-// }
+const submitFunctionMap = {
+  IS_ABLE_TO_BUILT: ableToBuild,
+  APPROVED_PROOF_OF_PAYMENT_DEPOSIT: approveProofDeposit,
+  BUILT_COMPLETE: builtComplete,
+  APPROVED_PROOF_OF_PAYMENT_FULL: approveProofFull,
+  SENT: sent,
+}
 
 export default {
   data: () => ({
-    loading: false,
     saving: false,
     error: false,
     data: null,
@@ -64,14 +70,13 @@ export default {
       getBuildOrderById(this.currId)
         .then((res) => {
           this.data = res.data
-          this.loading = false
         })
         .catch((err) => {
           if (err) this.error = true
-          this.loading = false
         })
     },
     cancelBuildOrder(e) {
+      this.saving = true
       cancelBuildOrder(this.currId, e.data)
         .then((res) => {
           this.$router.push(
@@ -79,23 +84,24 @@ export default {
               e.isUnable ? OrderState.IS_UNABLE_TO_BUILT : OrderState.CANCELLED
             }`
           )
-          this.loading = false
+          this.saving = false
         })
         .catch((err) => {
           if (err) this.error = true
-          this.loading = false
+          this.saving = false
         })
     },
     submit(event) {
-      // submitFunctionMap[event.state](this.currId, event.data)
-      //   .then((res) => {
-      //     this.$router.push(`/order/state/${event.state}`)
-      //     this.loading = false
-      //   })
-      //   .catch((err) => {
-      //     if (err) this.error = true
-      //     this.loading = false
-      //   })
+      this.saving = true
+      submitFunctionMap[event.state](this.currId, event.data)
+        .then((res) => {
+          this.$router.push(`/build-order/state/${event.state}`)
+          this.saving = false
+        })
+        .catch((err) => {
+          if (err) this.error = true
+          this.saving = false
+        })
     },
   },
 }

@@ -12,7 +12,6 @@
     >
       <OrderForm
         v-if="data"
-        :loading="loading"
         :saving="saving"
         :order="data"
         @cancel="cancelOrder"
@@ -47,7 +46,6 @@ const submitFunctionMap = {
 
 export default {
   data: () => ({
-    loading: false,
     saving: false,
     error: false,
     data: null,
@@ -62,37 +60,36 @@ export default {
   },
   methods: {
     getOrder() {
-      this.loading = true
       getOrderById(this.currId)
         .then((res) => {
           this.data = res.data
-          this.loading = false
         })
         .catch((err) => {
           if (err) this.error = true
-          this.loading = false
         })
     },
     cancelOrder(data) {
+      this.saving = true
       cancelOrder(this.currId, data)
         .then((res) => {
           this.$router.push(`/order/state/${OrderState.CANCELLED}`)
-          this.loading = false
+          this.saving = false
         })
         .catch((err) => {
           if (err) this.error = true
-          this.loading = false
+          this.saving = false
         })
     },
     submit(event) {
+      this.saving = true
       submitFunctionMap[event.state](this.currId, event.data)
         .then((res) => {
           this.$router.push(`/order/state/${event.state}`)
-          this.loading = false
+          this.saving = false
         })
         .catch((err) => {
           if (err) this.error = true
-          this.loading = false
+          this.saving = false
         })
     },
   },

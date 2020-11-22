@@ -1,10 +1,11 @@
 <template>
   <div class="form d-flex flex-column justify-space-between">
     <div>
-      <OrderDetail :order="order" :loading="loading" />
+      <OrderDetail :order="order" />
     </div>
     <OrderAction
       :order="order"
+      :saving="saving"
       @cancel="cancelDialog = true"
       @submit="(e) => $emit('submit', e)"
     />
@@ -44,7 +45,6 @@
 <script>
 export default {
   props: {
-    loading: Boolean,
     saving: Boolean,
     order: {
       type: Object,

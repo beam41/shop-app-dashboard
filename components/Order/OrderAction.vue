@@ -26,6 +26,18 @@
       >
         {{ btnTxt }}
       </v-btn>
+      <v-btn
+        v-else-if="
+          currState === OrderState.CREATED || currState === OrderState.SENT
+        "
+        large
+        color="primary"
+        :loading="saving"
+        type="submit"
+        disabled
+      >
+        รอการตอบกลับจากผู้ซื้อ
+      </v-btn>
     </div>
   </v-form>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title>ข้อมูลคำสั่งทำ</v-card-title>
+      <v-card-title>ข้อมูลคำสั่งทำที่ {{ order.id }}</v-card-title>
       <v-divider />
       <v-card-subtitle>ข้อมูลจากฟอร์มสั่งทำ</v-card-subtitle>
       <v-card-text class="text--primary">
@@ -175,7 +175,6 @@ import dayjs from 'dayjs'
 
 export default {
   props: {
-    loading: Boolean,
     order: {
       type: Object,
       default: null,

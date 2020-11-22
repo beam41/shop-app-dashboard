@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title>ข้อมูลคำสั่งซื้อ</v-card-title>
+      <v-card-title>ข้อมูลคำสั่งซื้อที่ {{ order.id }}</v-card-title>
       <v-divider />
       <v-card-subtitle>รายการสินค้า</v-card-subtitle>
       <v-simple-table>
@@ -43,7 +43,7 @@
       <v-card-subtitle>ข้อมูลที่อยู่</v-card-subtitle>
       <v-card-text class="text--primary">
         {{ order.fullName }}
-          <br />
+        <br />
         {{ order.address }}
         <br />
         {{ subDistTxt }} {{ order.subDistrict }} {{ distTxt }}
@@ -118,7 +118,6 @@ const purchaseMethodTxt = {
 }
 export default {
   props: {
-    loading: Boolean,
     order: {
       type: Object,
       default: null,
