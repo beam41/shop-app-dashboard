@@ -5,7 +5,7 @@
     </div>
     <BuildOrderAction
       :order="order"
-      @cancel="cancelDialog = true"
+      @cancel="openCancelDialog"
       @submit="(e) => $emit('submit', e)"
     />
 
@@ -13,7 +13,11 @@
     <v-dialog v-model="cancelDialog" max-width="400">
       <v-form ref="cancelForm" @submit.prevent="cancel">
         <v-card>
-          <v-card-title class="headline">ต้องการยกเลิกคำสั่งทำ?</v-card-title>
+          <v-card-title class="headline"
+            >{{
+              cancelIsUnable ? 'ไม่สามารถทำได้' : 'ต้องการยกเลิกคำสั่งทำ'
+            }}?</v-card-title
+          >
           <div class="mx-4">
             <v-text-field
               v-model="cancelReason"
@@ -32,7 +36,7 @@
               ปิด
             </v-btn>
             <v-btn color="secondary" text :loading="saving" type="submit">
-              ยกเลิกคำสั่งทำ
+              {{ cancelIsUnable ? 'ไม่สามารถทำได้' : 'ยกเลิกคำสั่งทำ' }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -54,6 +58,7 @@ export default {
   data: () => ({
     cancelDialog: false,
     cancelReason: '',
+    cancelIsUnable: false,
   }),
   methods: {
     closeCancel() {
@@ -62,8 +67,15 @@ export default {
     },
     cancel() {
       if (this.$refs.cancelForm.validate()) {
-        this.$emit('cancel', { reason: this.cancelReason })
+        this.$emit('cancel', {
+          data: { reason: this.cancelReason },
+          isUnable: this.cancelIsUnable,
+        })
       }
+    },
+    openCancelDialog(isUnable) {
+      this.cancelIsUnable = isUnable
+      this.cancelDialog = true
     },
   },
 }

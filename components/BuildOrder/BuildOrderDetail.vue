@@ -18,7 +18,13 @@
             cols="3"
           >
             <v-card class="mx-auto" max-width="300">
-              <v-img aspect-ratio="1" :src="img.imageUrl" :alt="img.imageUrl" />
+              <a :href="img.imageUrl" target="_blank">
+                <v-img
+                  aspect-ratio="1"
+                  :src="img.imageUrl"
+                  :alt="img.imageUrl"
+                />
+              </a>
             </v-card>
           </v-col>
         </v-row>

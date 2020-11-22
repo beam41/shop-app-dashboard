@@ -71,10 +71,14 @@ export default {
           this.loading = false
         })
     },
-    cancelBuildOrder(data) {
-      cancelBuildOrder(this.currId, data)
+    cancelBuildOrder(e) {
+      cancelBuildOrder(this.currId, e.data)
         .then((res) => {
-          this.$router.push(`/order/state/${OrderState.CANCELLED}`)
+          this.$router.push(
+            `/build-order/state/${
+              e.isUnable ? OrderState.IS_UNABLE_TO_BUILT : OrderState.CANCELLED
+            }`
+          )
           this.loading = false
         })
         .catch((err) => {
