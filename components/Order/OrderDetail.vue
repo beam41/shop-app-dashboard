@@ -42,6 +42,8 @@
       <v-divider />
       <v-card-subtitle>ข้อมูลที่อยู่</v-card-subtitle>
       <v-card-text class="text--primary">
+        {{ order.fullName }}
+          <br />
         {{ order.address }}
         <br />
         {{ subDistTxt }} {{ order.subDistrict }} {{ distTxt }}
