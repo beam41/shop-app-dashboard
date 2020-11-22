@@ -7,6 +7,7 @@
       mini-variant
       permanent
       app
+      class="no-scroll"
     >
       <v-list dark>
         <template v-for="(item, i) in items">
@@ -39,7 +40,7 @@
                 exact
               >
                 <v-list-item-action>
-                  <v-icon>{{ item.icon }}-outline</v-icon>
+                  <v-icon>{{ item.submenuIcon }}</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title v-text="sub.title" />
@@ -71,6 +72,7 @@
 
 <script>
 import OrderStateName from '@/constants/order-state-name'
+import BuildOrderStateName from '@/constants/build-order-state-name'
 import OrderState from '@/constants/order-state'
 export default {
   data() {
@@ -92,17 +94,18 @@ export default {
           to: '/promotion',
         },
         {
-          icon: 'mdi-credit-card-outline',
+          icon: 'mdi-credit-card',
           title: 'จัดการช่องทางการชำระเงิน',
           to: '/payment',
         },
         {
-          icon: 'mdi-truck-outline',
+          icon: 'mdi-truck',
           title: 'จัดการวิธีการจัดส่ง',
           to: '/distribution',
         },
         {
           icon: 'mdi-cart',
+          submenuIcon: 'mdi-cart-outline',
           title: 'ดูรายการการสั่งซื้อ',
           to: '/order',
           submenu: [
@@ -133,12 +136,59 @@ export default {
           ],
         },
         {
-          icon: 'mdi-hammer-wrench',
+          icon: 'mdi-hammer-screwdriver',
+          submenuIcon: 'mdi-hammer',
           title: 'ดูรายการการสั่งทำ',
           to: '/build-order',
+          submenu: [
+            {
+              title: BuildOrderStateName.CREATED,
+              to: `/build-order/state/${OrderState.CREATED}`,
+            },
+            {
+              title: BuildOrderStateName.IS_ABLE_TO_BUILT,
+              to: `/build-order/state/${OrderState.IS_ABLE_TO_BUILT}`,
+            },
+            {
+              title: BuildOrderStateName.ADDED_PROOF_OF_PAYMENT_DEPOSIT,
+              to: `/build-order/state/${OrderState.ADDED_PROOF_OF_PAYMENT_DEPOSIT}`,
+            },
+            {
+              title: BuildOrderStateName.APPROVED_PROOF_OF_PAYMENT_DEPOSIT,
+              to: `/build-order/state/${OrderState.APPROVED_PROOF_OF_PAYMENT_DEPOSIT}`,
+            },
+            {
+              title: BuildOrderStateName.BUILT_COMPLETE,
+              to: `/build-order/state/${OrderState.BUILT_COMPLETE}`,
+            },
+            {
+              title: BuildOrderStateName.ADDED_PROOF_OF_PAYMENT_FULL,
+              to: `/build-order/state/${OrderState.ADDED_PROOF_OF_PAYMENT_FULL}`,
+            },
+            {
+              title: BuildOrderStateName.APPROVED_PROOF_OF_PAYMENT_FULL,
+              to: `/build-order/state/${OrderState.APPROVED_PROOF_OF_PAYMENT_FULL}`,
+            },
+            {
+              title: BuildOrderStateName.SENT,
+              to: `/build-order/state/${OrderState.SENT}`,
+            },
+            {
+              title: BuildOrderStateName.RECEIVED,
+              to: `/build-order/state/${OrderState.RECEIVED}`,
+            },
+            {
+              title: BuildOrderStateName.CANCELLED,
+              to: `/build-order/state/${OrderState.CANCELLED}`,
+            },
+            {
+              title: BuildOrderStateName.IS_UNABLE_TO_BUILT,
+              to: `/build-order/state/${OrderState.IS_UNABLE_TO_BUILT}`,
+            },
+          ],
         },
         {
-          icon: 'mdi-account-outline',
+          icon: 'mdi-account',
           title: 'จัดการลูกค้าสมาชิก',
           to: '/user',
         },
@@ -153,3 +203,16 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.no-scroll {
+  ::v-deep .v-navigation-drawer__content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+</style>
