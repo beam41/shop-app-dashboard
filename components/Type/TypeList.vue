@@ -1,5 +1,4 @@
 <template>
-
   <v-card width="100%" class="mt-3">
     <v-data-table
       calculate-widths
