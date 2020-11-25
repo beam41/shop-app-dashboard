@@ -81,21 +81,29 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="error"
-            text
-            :disabled="saving"
-            @click="deleteDialog = false"
-          >
+          <v-btn text :disabled="saving" @click="deleteDialog = false">
             ยกเลิก
           </v-btn>
-          <v-btn
-            color="secondary"
-            text
-            :loading="saving"
-            @click="$emit('archive')"
-          >
+          <v-btn color="error" text :loading="saving" @click="$emit('archive')">
             เก็บถาวร
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- add edit dialog -->
+    <v-dialog v-model="saveDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">บันทึกข้อมูล?</v-card-title>
+
+        <v-card-text> ต้องการบันทึกข้อมูลโปรโมชันนี้หรือไม่ </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text :disabled="saving" @click="saveDialog = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="primary" text :loading="saving" @click="save">
+            บันทึก
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -124,6 +132,7 @@ export default {
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
     deleteDialog: false,
     products: [],
+    saveDialog: false,
   }),
   computed: {
     initialValueId() {
@@ -153,14 +162,17 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate() && !this.hasActiveInOther) {
-        this.$emit('submit', {
-          ...this.field,
-          promotionItems: this.field.promotionItems.map((e) => ({
-            productId: e.id,
-            newPrice: +e.newPrice,
-          })),
-        })
+        this.saveDialog = true
       }
+    },
+    save() {
+      this.$emit('submit', {
+        ...this.field,
+        promotionItems: this.field.promotionItems.map((e) => ({
+          productId: e.id,
+          newPrice: +e.newPrice,
+        })),
+      })
     },
     deleteItems(id) {
       this.field.promotionItems = this.field.promotionItems.filter(
