@@ -25,7 +25,11 @@
         outlined
         dense
       />
-      <TypeProductList :items="initialValueProduct" :loading="loading" />
+      <TypeProductList
+        v-if="editMode"
+        :items="initialValueProduct"
+        :loading="loading"
+      />
     </div>
     <div class="d-flex pt-16">
       <v-btn
