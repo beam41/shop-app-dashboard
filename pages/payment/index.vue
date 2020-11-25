@@ -86,6 +86,9 @@ export default {
       this.data = this.data.filter((_, index) => index !== i)
     },
   },
+  head: () => ({
+    title: 'จัดการช่องทางการชำระเงิน',
+  }),
 }
 </script>
 

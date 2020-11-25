@@ -37,5 +37,8 @@ export default {
         this.loading = false
       })
   },
+  head: () => ({
+    title: 'จัดการข้อมูลสินค้า',
+  }),
 }
 </script>

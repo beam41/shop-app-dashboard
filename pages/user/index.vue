@@ -37,5 +37,8 @@ export default {
         this.loading = false
       })
   },
+  head: () => ({
+    title: 'จัดการผู้ใช้งาน',
+  }),
 }
 </script>

@@ -104,6 +104,9 @@ export default {
         })
     },
   },
+  head: (vm) => ({
+    title: `จัดการคำสั่งทำที่ ${vm.currId}`,
+  }),
 }
 </script>
 

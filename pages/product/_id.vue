@@ -82,6 +82,9 @@ export default {
         })
     },
   },
+  head: (vm) => ({
+    title: `แก้ไขสินค้าเลขที่ ${vm.currId}`,
+  }),
 }
 </script>
 

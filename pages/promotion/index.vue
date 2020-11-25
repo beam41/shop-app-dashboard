@@ -39,5 +39,8 @@ export default {
         this.loading = false
       })
   },
+  head: () => ({
+    title: 'จัดการโปรโมชัน',
+  }),
 }
 </script>

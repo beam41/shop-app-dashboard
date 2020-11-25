@@ -41,6 +41,9 @@ export default {
         })
     },
   },
+  head: () => ({
+    title: 'เพิ่มประเภทสินค้า',
+  }),
 }
 </script>
 

@@ -50,5 +50,8 @@ export default {
         this.loading = false
       })
   },
+  head: (vm) => ({
+    title: `รายการการสั่งซื้อ: ${vm.stateName}`,
+  }),
 }
 </script>

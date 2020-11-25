@@ -81,6 +81,9 @@ export default {
         })
     },
   },
+  head: (vm) => ({
+    title: `แก้ไขผู้ใช้งานเลขที่ ${vm.currId}`,
+  }),
 }
 </script>
 

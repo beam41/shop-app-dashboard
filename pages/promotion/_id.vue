@@ -86,6 +86,9 @@ export default {
         })
     },
   },
+  head: (vm) => ({
+    title: `แก้ไขโปรโมชันเลขที่ ${vm.currId}`,
+  }),
 }
 </script>
 

@@ -85,6 +85,9 @@ export default {
         })
     },
   },
+  head: () => ({
+    title: 'เข้าสู่ระบบ',
+  }),
 }
 </script>
 

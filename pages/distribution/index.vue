@@ -88,6 +88,9 @@ export default {
       this.data = this.data.filter((_, index) => index !== i)
     },
   },
+  head: () => ({
+    title: 'จัดการวิธีการจัดส่ง',
+  }),
 }
 </script>
 
