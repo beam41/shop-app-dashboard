@@ -115,21 +115,29 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="error"
-            text
-            :disabled="saving"
-            @click="deleteDialog = false"
-          >
+          <v-btn text :disabled="saving" @click="deleteDialog = false">
             ยกเลิก
           </v-btn>
-          <v-btn
-            color="secondary"
-            text
-            :loading="saving"
-            @click="$emit('archive')"
-          >
+          <v-btn color="error" text :loading="saving" @click="$emit('archive')">
             เก็บถาวร
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- add edit dialog -->
+    <v-dialog v-model="saveDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">บันทึกข้อมูล?</v-card-title>
+
+        <v-card-text> ต้องการบันทึกข้อมูลสินค้านี้หรือไม่ </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text :disabled="saving" @click="saveDialog = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="primary" text :loading="saving" @click="save">
+            บันทึก
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -163,6 +171,7 @@ export default {
     types: [],
     typeLoading: false,
     deleteDialog: false,
+    saveDialog: false,
   }),
   computed: {
     notDeleteImgCount() {
@@ -207,20 +216,23 @@ export default {
     },
     submit() {
       if (this.$refs.form.validate()) {
-        const formPayload = new FormData()
-        Object.entries(this.field).forEach(([key, value]) => {
-          formPayload.append(key, value)
-        })
-        this.images.forEach((file) => {
-          formPayload.append('images', file)
-        })
-        this.oldImages
-          .filter((v) => v.markForDelete)
-          .forEach((v) => {
-            formPayload.append('markForDeleteId', v.id)
-          })
-        this.$emit('submit', formPayload)
+        this.saveDialog = true
       }
+    },
+    save() {
+      const formPayload = new FormData()
+      Object.entries(this.field).forEach(([key, value]) => {
+        formPayload.append(key, value)
+      })
+      this.images.forEach((file) => {
+        formPayload.append('images', file)
+      })
+      this.oldImages
+        .filter((v) => v.markForDelete)
+        .forEach((v) => {
+          formPayload.append('markForDeleteId', v.id)
+        })
+      this.$emit('submit', formPayload)
     },
   },
 }
