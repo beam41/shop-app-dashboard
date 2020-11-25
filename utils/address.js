@@ -1,4 +1,4 @@
-import addressData from '@/assets/thai-address-db.json'
+import addressData from '@/constants/thai-address-db'
 
 export function getProvinceList() {
   const provinces = addressData.map(({ province }) => province)
