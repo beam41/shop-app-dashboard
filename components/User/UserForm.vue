@@ -141,21 +141,29 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="error"
-            text
-            :disabled="saving"
-            @click="deleteDialog = false"
-          >
+          <v-btn text :disabled="saving" @click="deleteDialog = false">
             ยกเลิก
           </v-btn>
-          <v-btn
-            color="secondary"
-            text
-            :loading="saving"
-            @click="$emit('delete')"
-          >
+          <v-btn color="error" text :loading="saving" @click="$emit('delete')">
             ลบผู้ใช้
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- edit dialog -->
+    <v-dialog v-model="saveDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">บันทึกข้อมูล?</v-card-title>
+
+        <v-card-text> ต้องการบันทึกข้อมูลผู้ใช้งานนี้หรือไม่ </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text :disabled="saving" @click="saveDialog = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="primary" text :loading="saving" @click="save">
+            บันทึก
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -200,6 +208,7 @@ export default {
     usnExist: false,
     usnChecking: false,
     init: true,
+    saveDialog: false,
   }),
   computed: {
     initialValueId() {
@@ -263,14 +272,17 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate() && !this.hasActiveInOther) {
-        this.$emit('submit', {
-          ...this.field,
-          newPassword:
-            this.field.newPassword.length > 0
-              ? this.field.newPassword
-              : undefined,
-        })
+        this.saveDialog = true
       }
+    },
+    save() {
+      this.$emit('submit', {
+        ...this.field,
+        newPassword:
+          this.field.newPassword.length > 0
+            ? this.field.newPassword
+            : undefined,
+      })
     },
     checkExist(usn) {
       this.usnExist = false
