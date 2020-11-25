@@ -16,7 +16,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + 'Growth Silver Dashboard',
+    titleTemplate: '%s - Growth Silver Dashboard',
     title: 'Growth Silver Dashboard',
     meta: [
       { charset: 'utf-8' },
