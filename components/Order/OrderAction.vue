@@ -1,45 +1,66 @@
 <template>
-  <v-form v-if="!isFinal" ref="form" class="pt-8" @submit.prevent="submit">
-    <v-text-field
-      v-if="isBeforeSent"
-      v-model="field.trackingNumber"
-      :rules="rules"
-      label="เลขติดตามพัสดุ"
-      required
-      :disabled="saving"
-      outlined
-      dense
-    />
+  <div>
+    <v-form v-if="!isFinal" ref="form" class="pt-8" @submit.prevent="submit">
+      <v-text-field
+        v-if="isBeforeSent"
+        v-model="field.trackingNumber"
+        :rules="rules"
+        label="เลขติดตามพัสดุ"
+        required
+        :disabled="saving"
+        outlined
+        dense
+      />
 
-    <div class="d-flex">
-      <v-btn large color="error" outlined @click="$emit('cancel')">
-        ยกเลิกคำสั่งซื้อ
-      </v-btn>
+      <div class="d-flex">
+        <v-btn large color="error" outlined @click="$emit('cancel')">
+          ยกเลิกคำสั่งซื้อ
+        </v-btn>
 
-      <v-spacer />
-      <v-btn
-        v-if="btnTxt"
-        large
-        color="primary"
-        :loading="saving"
-        type="submit"
-      >
-        {{ btnTxt }}
-      </v-btn>
-      <v-btn
-        v-else-if="
-          currState === OrderState.CREATED || currState === OrderState.SENT
-        "
-        large
-        color="primary"
-        :loading="saving"
-        type="submit"
-        disabled
-      >
-        รอการตอบกลับจากผู้ซื้อ
-      </v-btn>
-    </div>
-  </v-form>
+        <v-spacer />
+        <v-btn
+          v-if="btnTxt"
+          large
+          color="primary"
+          :loading="saving"
+          type="submit"
+        >
+          {{ btnTxt }}
+        </v-btn>
+        <v-btn
+          v-else-if="
+            currState === OrderState.CREATED || currState === OrderState.SENT
+          "
+          large
+          color="primary"
+          :loading="saving"
+          type="submit"
+          disabled
+        >
+          รอการตอบกลับจากผู้ซื้อ
+        </v-btn>
+      </div>
+    </v-form>
+    <v-dialog v-model="saveDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">ยืนยันสถานะ?</v-card-title>
+
+        <v-card-text>
+          สถานะของคำสั่งซื้อจะถูกเปลี่ยนแปลง ต้องการบันทึกข้อมูลหรือไม่
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text :disabled="saving" @click="saveDialog = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="primary" text :loading="saving" @click="save">
+            {{ btnTxt }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -64,6 +85,7 @@ export default {
       trackingNumber: '',
     },
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
+    saveDialog: false,
   }),
   computed: {
     currState() {
@@ -92,13 +114,16 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', {
-          state: this.isBeforeSent
-            ? OrderState.SENT
-            : OrderState.APPROVED_PROOF_OF_PAYMENT_FULL,
-          data: { ...this.field },
-        })
+        this.saveDialog = true
       }
+    },
+    save() {
+      this.$emit('submit', {
+        state: this.isBeforeSent
+          ? OrderState.SENT
+          : OrderState.APPROVED_PROOF_OF_PAYMENT_FULL,
+        data: { ...this.field },
+      })
     },
   },
 }

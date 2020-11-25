@@ -1,95 +1,116 @@
 <template>
-  <v-form v-if="!isFinal" ref="form" class="pt-8" @submit.prevent="submit">
-    <template v-if="currState === OrderState.CREATED">
-      <v-text-field
-        v-model="ableField.fullPrice"
-        :rules="rules"
-        label="ราคาที่ประเมินได้"
-        required
-        :disabled="saving"
-        outlined
-        dense
-      />
-      <v-text-field
-        v-model="ableField.depositPrice"
-        :rules="rules"
-        label="ราคามัดจำ"
-        required
-        :disabled="saving"
-        outlined
-        dense
-      />
-    </template>
-    <template v-if="currState === OrderState.ADDED_PROOF_OF_PAYMENT_DEPOSIT">
-      <v-menu
-        v-model="dateMenu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-            v-model="expectedCompleteDateFormatted"
-            label="เลือกวันที่คาดว่าจะแล้วเสร็จ"
-            :rules="rules"
-            readonly
-            v-bind="attrs"
-            outlined
-            dense
-            v-on="on"
-          />
-        </template>
-        <v-date-picker
-          v-model="approveProofField.expectedCompleteDate"
-          @input="dateMenu = false"
+  <div>
+    <v-form v-if="!isFinal" ref="form" class="pt-8" @submit.prevent="submit">
+      <template v-if="currState === OrderState.CREATED">
+        <v-text-field
+          v-model="ableField.fullPrice"
+          :rules="rules"
+          label="ราคาที่ประเมินได้"
+          required
+          :disabled="saving"
+          outlined
+          dense
         />
-      </v-menu>
-    </template>
-    <template v-if="currState === OrderState.APPROVED_PROOF_OF_PAYMENT_FULL">
-      <v-text-field
-        v-model="sentField.trackingNumber"
-        :rules="rules"
-        label="เลขติดตามพัสดุ"
-        required
-        :disabled="saving"
-        outlined
-        dense
-      />
-    </template>
+        <v-text-field
+          v-model="ableField.depositPrice"
+          :rules="rules"
+          label="ราคามัดจำ"
+          required
+          :disabled="saving"
+          outlined
+          dense
+        />
+      </template>
+      <template v-if="currState === OrderState.ADDED_PROOF_OF_PAYMENT_DEPOSIT">
+        <v-menu
+          v-model="dateMenu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="expectedCompleteDateFormatted"
+              label="เลือกวันที่คาดว่าจะแล้วเสร็จ"
+              :rules="rules"
+              readonly
+              v-bind="attrs"
+              outlined
+              dense
+              v-on="on"
+            />
+          </template>
+          <v-date-picker
+            v-model="approveProofField.expectedCompleteDate"
+            @input="dateMenu = false"
+          />
+        </v-menu>
+      </template>
+      <template v-if="currState === OrderState.APPROVED_PROOF_OF_PAYMENT_FULL">
+        <v-text-field
+          v-model="sentField.trackingNumber"
+          :rules="rules"
+          label="เลขติดตามพัสดุ"
+          required
+          :disabled="saving"
+          outlined
+          dense
+        />
+      </template>
 
-    <div class="d-flex">
-      <v-btn large color="error" outlined @click="$emit('cancel', isCreated)">
-        {{ isCreated ? 'ไม่สามารถทำได้' : 'ยกเลิกคำสั่งซื้อ' }}
-      </v-btn>
+      <div class="d-flex">
+        <v-btn large color="error" outlined @click="$emit('cancel', isCreated)">
+          {{ isCreated ? 'ไม่สามารถทำได้' : 'ยกเลิกคำสั่งซื้อ' }}
+        </v-btn>
 
-      <v-spacer />
-      <v-btn
-        v-if="btnTxt"
-        large
-        color="primary"
-        :loading="saving"
-        type="submit"
-      >
-        {{ btnTxt }}
-      </v-btn>
-      <v-btn
-        v-else-if="
-          currState === OrderState.BUILT_COMPLETE ||
-          currState === OrderState.IS_ABLE_TO_BUILT ||
-          currState === OrderState.SENT
-        "
-        large
-        color="primary"
-        :loading="saving"
-        type="submit"
-        disabled
-      >
-        รอการตอบกลับจากผู้ซื้อ
-      </v-btn>
-    </div>
-  </v-form>
+        <v-spacer />
+        <v-btn
+          v-if="btnTxt"
+          large
+          color="primary"
+          :loading="saving"
+          type="submit"
+        >
+          {{ btnTxt }}
+        </v-btn>
+        <v-btn
+          v-else-if="
+            currState === OrderState.BUILT_COMPLETE ||
+            currState === OrderState.IS_ABLE_TO_BUILT ||
+            currState === OrderState.SENT
+          "
+          large
+          color="primary"
+          :loading="saving"
+          type="submit"
+          disabled
+        >
+          รอการตอบกลับจากผู้ซื้อ
+        </v-btn>
+      </div>
+    </v-form>
+    <v-dialog v-model="saveDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">ยืนยันสถานะ?</v-card-title>
+
+        <v-card-text>
+          สถานะของคำสั่งทำจะถูกเปลี่ยนแปลง ต้องการบันทึกข้อมูลหรือไม่
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text :disabled="saving" @click="saveDialog = false">
+            ยกเลิก
+          </v-btn>
+          <v-btn color="primary" text :loading="saving" @click="save">
+            {{ btnTxt }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -133,6 +154,7 @@ export default {
     },
     dateMenu: false,
     rules: [(v) => !!v || 'โปรดกรอกข้อมูลให้ครบถ้วน'],
+    saveDialog: false,
   }),
   computed: {
     currState() {
@@ -175,11 +197,14 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.$emit('submit', {
-          state: nextState[this.currState],
-          data: this.fieldMap[this.currState],
-        })
+        this.saveDialog = true
       }
+    },
+    save() {
+      this.$emit('submit', {
+        state: nextState[this.currState],
+        data: this.fieldMap[this.currState],
+      })
     },
   },
 }

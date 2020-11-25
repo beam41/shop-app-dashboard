@@ -8,7 +8,11 @@
         <template v-slot:default>
           <tbody>
             <tr v-for="item in order.products" :key="item.id">
-              <td class="text-left">{{ item.name }}</td>
+              <td class="text-left">
+                <a :href="`/product/${item.id}`" target="_blank">{{
+                  item.name
+                }}</a>
+              </td>
               <td v-if="item.newPrice" class="text-left">
                 <span class="red--text text-decoration-line-through">{{
                   item.price
