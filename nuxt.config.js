@@ -99,4 +99,9 @@ export default {
   router: {
     middleware: ['authorize'],
   },
+  pwa: {
+    icon: {
+      source: './static/icon.jpg',
+    },
+  },
 }
