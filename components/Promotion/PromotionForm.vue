@@ -61,7 +61,7 @@
         outlined
         @click="deleteDialog = true"
       >
-        เก็บถาวร
+        เก็บซ่อนถาวร
       </v-btn>
 
       <v-spacer />
@@ -72,11 +72,11 @@
     <!-- delete dialog -->
     <v-dialog v-model="deleteDialog" max-width="400">
       <v-card>
-        <v-card-title class="headline">ต้องการเก็บถาวร?</v-card-title>
+        <v-card-title class="headline">ต้องการเก็บซ่อนถาวร?</v-card-title>
 
         <v-card-text>
-          ต้องการเก็บถาวรโปรโมชันนี้หรือไม่
-          โปรโมชันที่ถูกเก็บถาวรจะไม่ถูกแสดงในรายการโปรโมชันและในหน้าร้านค้าอีก
+          ต้องการเก็บซ่อนถาวรโปรโมชันนี้หรือไม่
+          โปรโมชันที่ถูกเก็บซ่อนถาวรจะไม่ถูกแสดงในรายการโปรโมชันและในหน้าร้านค้าอีก
         </v-card-text>
 
         <v-card-actions>
@@ -85,7 +85,7 @@
             ยกเลิก
           </v-btn>
           <v-btn color="error" text :loading="saving" @click="$emit('archive')">
-            เก็บถาวร
+            เก็บซ่อนถาวร
           </v-btn>
         </v-card-actions>
       </v-card>

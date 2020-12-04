@@ -96,7 +96,7 @@
         :disabled="saving"
         @click="deleteDialog = true"
       >
-        เก็บถาวร
+        เก็บซ่อนถาวร
       </v-btn>
       <v-spacer />
       <v-btn large color="primary" :loading="saving" type="submit">
@@ -106,11 +106,11 @@
     <!-- delete dialog -->
     <v-dialog v-model="deleteDialog" max-width="400">
       <v-card>
-        <v-card-title class="headline">ต้องการเก็บถาวร?</v-card-title>
+        <v-card-title class="headline">ต้องการเก็บซ่อนถาวร?</v-card-title>
 
         <v-card-text>
-          ต้องการเก็บถาวรสินค้านี้หรือไม่
-          สินค้าที่ถูกเก็บถาวรจะไม่ถูกแสดงในตารางสินค้าและในหน้าร้านค้าอีก
+          ต้องการเก็บซ่อนถาวรสินค้านี้หรือไม่
+          สินค้าที่ถูกเก็บซ่อนถาวรจะไม่ถูกแสดงในตารางสินค้าและในหน้าร้านค้าอีก
         </v-card-text>
 
         <v-card-actions>
@@ -119,7 +119,7 @@
             ยกเลิก
           </v-btn>
           <v-btn color="error" text :loading="saving" @click="$emit('archive')">
-            เก็บถาวร
+            เก็บซ่อนถาวร
           </v-btn>
         </v-card-actions>
       </v-card>
