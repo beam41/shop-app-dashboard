@@ -6,14 +6,12 @@
   >
     <div>
       <v-text-field
-        v-if="editMode"
-        v-model="initialValueId"
+        v-model="field.id"
         label="ID"
         :loading="loading"
-        :disabled="saving"
+        :disabled="saving || editMode"
         outlined
         dense
-        readonly
       />
       <v-text-field
         v-model="field.name"
@@ -159,6 +157,7 @@ export default {
   },
   data: () => ({
     field: {
+      id: '',
       name: '',
       price: '',
       typeId: null,
@@ -177,13 +176,11 @@ export default {
     notDeleteImgCount() {
       return this.oldImages.filter((v) => !v.markForDelete).length
     },
-    initialValueId() {
-      return this.initialValue?.id
-    },
   },
   watch: {
     initialValue(val) {
       this.field = {
+        id: val.id,
         name: val.name,
         price: val.price,
         typeId: val.typeId,
