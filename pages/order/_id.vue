@@ -94,7 +94,7 @@ export default {
     },
   },
   head: (vm) => ({
-    title: `จัดการคำสั่งซื้อที่ ${vm.currId}`,
+    title: `จัดการคำสั่งซื้อ ${vm.currId}`,
   }),
 }
 </script>

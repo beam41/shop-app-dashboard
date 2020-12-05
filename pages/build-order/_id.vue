@@ -105,7 +105,7 @@ export default {
     },
   },
   head: (vm) => ({
-    title: `จัดการคำสั่งทำที่ ${vm.currId}`,
+    title: `จัดการคำสั่งทำ ${vm.currId}`,
   }),
 }
 </script>

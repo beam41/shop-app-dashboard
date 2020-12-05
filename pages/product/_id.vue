@@ -83,7 +83,7 @@ export default {
     },
   },
   head: (vm) => ({
-    title: `แก้ไขสินค้าเลขที่ ${vm.currId}`,
+    title: `แก้ไขสินค้ารหัส ${vm.currId}`,
   }),
 }
 </script>

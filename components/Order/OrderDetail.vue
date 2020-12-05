@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title>ข้อมูลคำสั่งซื้อที่ {{ order.id }}</v-card-title>
+      <v-card-title>ข้อมูลคำสั่งซื้อ {{ order.id }}</v-card-title>
       <v-divider />
       <v-card-subtitle>รายการสินค้า</v-card-subtitle>
       <v-simple-table>
@@ -9,9 +9,9 @@
           <tbody>
             <tr v-for="item in order.products" :key="item.id">
               <td class="text-left">
-                <a :href="`/product/${item.id}`" target="_blank">{{
-                  item.name
-                }}</a>
+                <a :href="`/product/${item.id}`" target="_blank">
+                  {{ item.id }}: {{ item.name }}
+                </a>
               </td>
               <td v-if="item.newPrice" class="text-left">
                 <span class="red--text text-decoration-line-through">{{
