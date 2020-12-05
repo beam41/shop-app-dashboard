@@ -10,7 +10,7 @@
       <ProductForm :saving="loading" @submit="submit" />
     </v-row>
     <v-snackbar v-model="error">
-      เกิดปัญหาขึ้น
+      {{ dupe ? 'Id ของสินค้าซ้ำ' : 'เกิดปัญหาขึ้น' }}
       <template #action="{ attrs }">
         <v-btn color="secondary" text v-bind="attrs" @click="error = false">
           Close
@@ -26,6 +26,7 @@ export default {
   data: () => ({
     loading: false,
     error: false,
+    dupe: false,
   }),
   methods: {
     submit(data) {
@@ -37,7 +38,10 @@ export default {
         })
         .catch((err) => {
           this.loading = false
-          if (err) this.error = true
+          if (err) {
+            this.error = true
+            this.dupe = err.response.data.message === 'duplicate'
+          }
         })
     },
   },

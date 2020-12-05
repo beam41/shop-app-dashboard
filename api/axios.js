@@ -18,16 +18,6 @@ export const createInstance = ({ store, redirect }) => {
     return config
   })
 
-  instance.interceptors.response.use(
-    (res) => res,
-    (err) => {
-      if (err.response.status === 401) {
-        store.commit('user/logout')
-        redirect('/')
-      }
-    }
-  )
-
   axios.instance = instance
 }
 
