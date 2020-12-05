@@ -45,10 +45,10 @@
 
       <v-divider />
       <v-card-subtitle>ข้อมูลที่อยู่</v-card-subtitle>
-      <v-card-text class="text--primary">
+      <v-card-text class="text--primary pre-wrap">
         {{ order.fullName }}
         <br />
-        {{ order.address }}
+        <span class="pre-wrap">{{ order.address }}</span>
         <br />
         {{ subDistTxt }} {{ order.subDistrict }} {{ distTxt }}
         {{ order.district }}

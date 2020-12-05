@@ -9,7 +9,7 @@
         <br />
         เบอร์ติดต่อ: {{ order.phoneNumber }}
         <br />
-        คำอธิบาย: {{ order.orderDescription }}
+        คำอธิบาย: <span class="pre-wrap">{{ order.orderDescription }}</span>
         <br />
         <v-row class="img-row flex flex-nowrap">
           <v-col
@@ -114,7 +114,7 @@
         <v-card-text class="text--primary">
           {{ order.addressFullName }}
           <br />
-          {{ order.address }}
+          <span class="pre-wrap">{{ order.address }}</span>
           <br />
           {{ subDistTxt }} {{ order.subDistrict }} {{ distTxt }}
           {{ order.district }}
