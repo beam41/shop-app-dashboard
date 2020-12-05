@@ -1,14 +1,6 @@
 <template>
   <v-app light>
-    <v-navigation-drawer
-      :width="300"
-      dark
-      expand-on-hover
-      mini-variant
-      permanent
-      app
-      class="no-scroll"
-    >
+    <v-navigation-drawer :width="430" dark permanent app class="no-scroll">
       <v-list dark>
         <template v-for="(item, i) in items">
           <template v-if="!item.submenu">
@@ -39,9 +31,7 @@
                 router
                 exact
               >
-                <v-list-item-action>
-                  <v-icon>{{ item.submenuIcon }}</v-icon>
-                </v-list-item-action>
+                <v-list-item-action> </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title v-text="sub.title" />
                 </v-list-item-content>
@@ -105,7 +95,6 @@ export default {
         },
         {
           icon: 'mdi-cart',
-          submenuIcon: 'mdi-cart-outline',
           title: 'ดูรายการการสั่งซื้อ',
           to: '/order',
           submenu: [
@@ -137,7 +126,6 @@ export default {
         },
         {
           icon: 'mdi-hammer-screwdriver',
-          submenuIcon: 'mdi-hammer',
           title: 'ดูรายการการสั่งทำ',
           to: '/build-order',
           submenu: [
